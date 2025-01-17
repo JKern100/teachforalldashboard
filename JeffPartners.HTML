@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teach For All Partner Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #0056b3;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .section {
+            margin-bottom: 2rem;
+        }
+        .section h2 {
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        select, input[type="date"] {
+            width: 15ch;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            display: block;
+            margin: 1rem auto;
+            padding: 0.5rem 1rem;
+            background-color: #0056b3;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #0056b3;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Teach For All Partner Dashboard</h1>
+    </header>
+    <div class="container">
+        <!-- Partner Selection Section -->
+        <div class="section">
+            <h2>Partner Selection</h2>
+            <div class="form-group">
+                <label for="partner">Select Partner Country:</label>
+                <select id="partner">
+                    <option value="italy">Italy</option>
+                    <option value="portugal">Portugal</option>
+                    <option value="spain">Spain</option>
+                    <option value="latvia">Latvia</option>
+                    <option value="slovakia">Slovakia</option>
+                    <option value="moldova">Moldova</option>
+                    <option value="ukraine">Ukraine</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="start-date">Start Date:</label>
+                <input type="date" id="start-date">
+            </div>
+            <div class="form-group">
+                <label for="end-date">End Date:</label>
+                <input type="date" id="end-date">
+            </div>
+            <button type="submit" id="submit-button">Submit</button>
+        </div>
+
+        <!-- Meeting Highlights Section -->
+        <div class="section">
+            <h2>Meeting Highlights</h2>
+            <div class="card">
+                <h3>Key Points</h3>
+                <ul>
+                    <li>Discussed funding strategies for Q1 2025.</li>
+                    <li>Agreed to share resource templates by next meeting.</li>
+                    <li>Identified potential areas for collaboration between partners.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Email Highlights Section -->
+        <div class="section">
+            <h2>Email Highlights</h2>
+            <div class="card">
+                <h3>Recent Updates</h3>
+                <ul>
+                    <li>Confirmed attendance for the upcoming strategy meeting.</li>
+                    <li>Follow-up on shared project proposal documents.</li>
+                    <li>Requested clarification on funding allocation.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Action Items Section -->
+        <div class="section">
+            <h2>Action Items</h2>
+            <div class="card">
+                <h3>This Week's Priorities</h3>
+                <div class="action-item">Follow up with Partner A about their Q4 report.</div>
+                <div class="action-item">Schedule a call with Partner B for project planning.</div>
+                <div class="action-item">Share updated resource kit with Partner C.</div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2025 Teach For All. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById('submit-button').addEventListener('click', async function () {
+            const partner = document.getElementById('partner').value;
+            const startDate = document.getElementById('start-date').value;
+            const endDate = document.getElementById('end-date').value;
+
+            const response = await fetch('https://hooks.zapier.com/hooks/catch/4724942/2khe6dc/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ partner, startDate, endDate })
+            });
+
+            const data = await response.json();
+
+            // Update the dashboard sections with returned data
+            console.log(data); // For testing purposes
+        });
+    </script>
+</body>
+</html>
