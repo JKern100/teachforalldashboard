@@ -144,16 +144,23 @@
             const startDate = document.getElementById('start-date').value;
             const endDate = document.getElementById('end-date').value;
 
-            const response = await fetch('https://hooks.zapier.com/hooks/catch/4724942/2khe6dc/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ partner, startDate, endDate })
-            });
+            const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+            const zapierWebhookUrl = 'https://hooks.zapier.com/hooks/catch/4724942/2khe6dc/';
 
-            const data = await response.json();
+            try {
+                const response = await fetch(proxyUrl + zapierWebhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ partner, startDate, endDate })
+                });
 
-            // Update the dashboard sections with returned data
-            console.log(data); // For testing purposes
+                const data = await response.json();
+
+                console.log(data); // Log response for testing
+            } catch (error) {
+                console.error('Error:', error); // Log any errors
+                alert('Failed to send data. Please try again later.');
+            }
         });
     </script>
 </body>
