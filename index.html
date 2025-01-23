@@ -3,165 +3,327 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teach For All Partner Dashboard</title>
+    <title>Time Management Dashboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
+            padding: 20px;
+            background-color: #e3f2fd;
         }
-        header {
-            background-color: #0056b3;
-            color: #fff;
-            padding: 1rem;
+        .timer-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .timer {
             text-align: center;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 1rem;
-            background: #fff;
+            background: linear-gradient(135deg, #ffffff, #e3f2fd);
+            border: 2px solid #90caf9;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            margin: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
         }
-        .section {
-            margin-bottom: 2rem;
+        .timer:hover {
+            transform: scale(1.05);
         }
-        .section h2 {
-            border-bottom: 2px solid #0056b3;
-            padding-bottom: 0.5rem;
-            margin-bottom: 1rem;
-            color: #333;
-        }
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        label {
-            display: block;
+        .timer-title {
+            font-size: 18px;
+            margin-bottom: 10px;
             font-weight: bold;
-            margin-bottom: 0.5rem;
+            color: #1565c0;
         }
-        select, input[type="date"] {
-            width: 15ch;
-            padding: 0.5rem;
-            border: 1px solid #ddd;
+        .timer-title[contenteditable] {
+            border: 1px dashed #ccc;
+            padding: 2px;
+            background-color: #e1f5fe;
             border-radius: 4px;
         }
-        button {
-            display: block;
-            margin: 1rem auto;
-            padding: 0.5rem 1rem;
-            background-color: #0056b3;
-            color: #fff;
+        .timer-display {
+            font-size: 26px;
+            margin-bottom: 10px;
+            color: #1e88e5;
+            font-weight: bold;
+        }
+        .timer-buttons button {
+            margin: 5px;
+            padding: 8px 14px;
+            font-size: 14px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            background-color: #42a5f5;
+            color: white;
+            transition: background-color 0.2s ease;
         }
-        footer {
-            text-align: center;
-            padding: 1rem;
-            background-color: #0056b3;
-            color: #fff;
+        .timer-buttons button:hover {
+            background-color: #1e88e5;
+        }
+        .summary-table {
+            margin-top: 20px;
+            margin-left: 10px;
+            border-collapse: collapse;
+            width: 90%;
+            background-color: #ffffff;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .summary-table th, .summary-table td {
+            border: 1px solid #90caf9;
+            padding: 10px;
+            text-align: left;
+        }
+        .summary-table th {
+            background-color: #bbdefb;
+            color: #0d47a1;
+            font-weight: bold;
+        }
+        .summary-table td {
+            color: #1565c0;
+        }
+        .reset-all-button {
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #0d47a1;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .reset-all-button:hover {
+            background-color: #002171;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Teach For All Partner Dashboard</h1>
-    </header>
-    <div class="container">
-        <!-- Partner Selection Section -->
-        <div class="section">
-            <h2>Partner Selection</h2>
-            <div class="form-group">
-                <label for="partner">Select Partner Country:</label>
-                <select id="partner">
-                    <option value="italy">Italy</option>
-                    <option value="portugal">Portugal</option>
-                    <option value="spain">Spain</option>
-                    <option value="latvia">Latvia</option>
-                    <option value="slovakia">Slovakia</option>
-                    <option value="moldova">Moldova</option>
-                    <option value="ukraine">Ukraine</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="start-date">Start Date:</label>
-                <input type="date" id="start-date">
-            </div>
-            <div class="form-group">
-                <label for="end-date">End Date:</label>
-                <input type="date" id="end-date">
-            </div>
-            <button type="submit" id="submit-button">Submit</button>
-        </div>
-
-        <!-- Meeting Highlights Section -->
-        <div class="section">
-            <h2>Meeting Highlights</h2>
-            <div class="card">
-                <h3>Key Points</h3>
-                <ul>
-                    <li>Discussed funding strategies for Q1 2025.</li>
-                    <li>Agreed to share resource templates by next meeting.</li>
-                    <li>Identified potential areas for collaboration between partners.</li>
-                </ul>
+    <h1 style="color: #0d47a1; text-align: center;">Time Management Dashboard</h1>
+    <button class="reset-all-button" onclick="resetAllTimers()">Reset All</button>
+    <div class="timer-container">
+        <div class="timer" id="emailing">
+            <div class="timer-title" contenteditable="true">Emailing</div>
+            <div class="timer-display" id="emailing-display">00:00:00</div>
+            <div class="timer-buttons">
+                <button onclick="startTimer('emailing')">Start</button>
+                <button onclick="pauseTimer('emailing')">Pause</button>
+                <button onclick="resetTimer('emailing')">Reset</button>
             </div>
         </div>
-
-        <!-- Email Highlights Section -->
-        <div class="section">
-            <h2>Email Highlights</h2>
-            <div class="card">
-                <h3>Recent Updates</h3>
-                <ul>
-                    <li>Confirmed attendance for the upcoming strategy meeting.</li>
-                    <li>Follow-up on shared project proposal documents.</li>
-                    <li>Requested clarification on funding allocation.</li>
-                </ul>
+        <div class="timer" id="scheduling">
+            <div class="timer-title" contenteditable="true">Scheduling</div>
+            <div class="timer-display" id="scheduling-display">00:00:00</div>
+            <div class="timer-buttons">
+                <button onclick="startTimer('scheduling')">Start</button>
+                <button onclick="pauseTimer('scheduling')">Pause</button>
+                <button onclick="resetTimer('scheduling')">Reset</button>
             </div>
         </div>
-
-        <!-- Action Items Section -->
-        <div class="section">
-            <h2>Action Items</h2>
-            <div class="card">
-                <h3>This Week's Priorities</h3>
-                <div class="action-item">Follow up with Partner A about their Q4 report.</div>
-                <div class="action-item">Schedule a call with Partner B for project planning.</div>
-                <div class="action-item">Share updated resource kit with Partner C.</div>
+        <div class="timer" id="meeting">
+            <div class="timer-title" contenteditable="true">Meeting</div>
+            <div class="timer-display" id="meeting-display">00:00:00</div>
+            <div class="timer-buttons">
+                <button onclick="startTimer('meeting')">Start</button>
+                <button onclick="pauseTimer('meeting')">Pause</button>
+                <button onclick="resetTimer('meeting')">Reset</button>
+            </div>
+        </div>
+        <div class="timer" id="reflecting">
+            <div class="timer-title" contenteditable="true">Reflecting</div>
+            <div class="timer-display" id="reflecting-display">00:00:00</div>
+            <div class="timer-buttons">
+                <button onclick="startTimer('reflecting')">Start</button>
+                <button onclick="pauseTimer('reflecting')">Pause</button>
+                <button onclick="resetTimer('reflecting')">Reset</button>
+            </div>
+        </div>
+        <div class="timer" id="other">
+            <div class="timer-title" contenteditable="true">Other</div>
+            <div class="timer-display" id="other-display">00:00:00</div>
+            <div class="timer-buttons">
+                <button onclick="startTimer('other')">Start</button>
+                <button onclick="pauseTimer('other')">Pause</button>
+                <button onclick="resetTimer('other')">Reset</button>
+            </div>
+        </div>
+        <div class="timer" id="other2">
+            <div class="timer-title" contenteditable="true">Other 2</div>
+            <div class="timer-display" id="other2-display">00:00:00</div>
+            <div class="timer-buttons">
+                <button onclick="startTimer('other2')">Start</button>
+                <button onclick="pauseTimer('other2')">Pause</button>
+                <button onclick="resetTimer('other2')">Reset</button>
+            </div>
+        </div>
+        <div class="timer" id="other3">
+            <div class="timer-title" contenteditable="true">Other 3</div>
+            <div class="timer-display" id="other3-display">00:00:00</div>
+            <div class="timer-buttons">
+                <button onclick="startTimer('other3')">Start</button>
+                <button onclick="pauseTimer('other3')">Pause</button>
+                <button onclick="resetTimer('other3')">Reset</button>
+            </div>
+        </div>
+        <div class="timer" id="other4">
+            <div class="timer-title" contenteditable="true">Other 4</div>
+            <div class="timer-display" id="other4-display">00:00:00</div>
+            <div class="timer-buttons">
+                <button onclick="startTimer('other4')">Start</button>
+                <button onclick="pauseTimer('other4')">Pause</button>
+                <button onclick="resetTimer('other4')">Reset</button>
+            </div>
+        </div>
+        <div class="timer" id="other5">
+            <div class="timer-title" contenteditable="true">Other 5</div>
+            <div class="timer-display" id="other5-display">00:00:00</div>
+            <div class="timer-buttons">
+                <button onclick="startTimer('other5')">Start</button>
+                <button onclick="pauseTimer('other5')">Pause</button>
+                <button onclick="resetTimer('other5')">Reset</button>
             </div>
         </div>
     </div>
-    <footer>
-        <p>&copy; 2025 Teach For All. All rights reserved.</p>
-    </footer>
+
+    <table class="summary-table">
+        <thead>
+            <tr>
+                <th>Label</th>
+                <th>Total Time</th>
+                <th>Percentage</th>
+            </tr>
+        </thead>
+        <tbody id="summary-body">
+            <!-- Rows will be dynamically updated -->
+        </tbody>
+    </table>
 
     <script>
-        document.getElementById('submit-button').addEventListener('click', async function () {
-            const partner = document.getElementById('partner').value;
-            const startDate = document.getElementById('start-date').value;
-            const endDate = document.getElementById('end-date').value;
+        const defaultTimers = {
+            emailing: { startTime: null, elapsed: 0 },
+            scheduling: { startTime: null, elapsed: 0 },
+            meeting: { startTime: null, elapsed: 0 },
+            reflecting: { startTime: null, elapsed: 0 },
+            other: { startTime: null, elapsed: 0 },
+            other2: { startTime: null, elapsed: 0 },
+            other3: { startTime: null, elapsed: 0 },
+            other4: { startTime: null, elapsed: 0 },
+            other5: { startTime: null, elapsed: 0 }
+        };
 
-            const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-            const zapierWebhookUrl = 'https://hooks.zapier.com/hooks/catch/4724942/2khe6dc/';
+        const timers = JSON.parse(localStorage.getItem('timers')) || defaultTimers;
 
-            try {
-                const response = await fetch(proxyUrl + zapierWebhookUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ partner, startDate, endDate })
-                });
-
-                const data = await response.json();
-
-                console.log(data); // Log response for testing
-            } catch (error) {
-                console.error('Error:', error); // Log any errors
-                alert('Failed to send data. Please try again later.');
+        // Ensure all timers are initialized correctly
+        Object.keys(defaultTimers).forEach(timerId => {
+            if (!timers[timerId]) {
+                timers[timerId] = { ...defaultTimers[timerId] };
+            } else {
+                if (timers[timerId].startTime === undefined) timers[timerId].startTime = null;
+                if (timers[timerId].elapsed === undefined) timers[timerId].elapsed = 0;
             }
         });
+
+        const intervals = {};
+
+        function saveTimers() {
+            localStorage.setItem('timers', JSON.stringify(timers));
+        }
+
+        function startTimer(timerId) {
+            pauseAllTimers(timerId);
+            if (!timers[timerId].startTime) {
+                timers[timerId].startTime = Date.now() - timers[timerId].elapsed * 1000;
+                saveTimers();
+            }
+
+            if (!intervals[timerId]) {
+                intervals[timerId] = setInterval(() => {
+                    const now = Date.now();
+                    timers[timerId].elapsed = Math.floor((now - timers[timerId].startTime) / 1000);
+                    updateDisplay(timerId);
+                    updateSummary();
+                }, 1000);
+            }
+        }
+
+        function pauseTimer(timerId) {
+            if (intervals[timerId]) {
+                clearInterval(intervals[timerId]);
+                intervals[timerId] = null;
+            }
+            if (timers[timerId].startTime) {
+                const now = Date.now();
+                timers[timerId].elapsed = Math.floor((now - timers[timerId].startTime) / 1000);
+                timers[timerId].startTime = null;
+                saveTimers();
+            }
+        }
+
+        function resetTimer(timerId) {
+            timers[timerId].startTime = null;
+            timers[timerId].elapsed = 0;
+            clearInterval(intervals[timerId]);
+            intervals[timerId] = null;
+            updateDisplay(timerId);
+            updateSummary();
+            saveTimers();
+        }
+
+        function resetAllTimers() {
+            Object.keys(timers).forEach(timerId => {
+                resetTimer(timerId);
+            });
+        }
+
+        function pauseAllTimers(excludeId) {
+            Object.keys(intervals).forEach(timerId => {
+                if (timerId !== excludeId) {
+                    pauseTimer(timerId);
+                }
+            });
+        }
+
+        function updateDisplay(timerId) {
+            const display = document.getElementById(`${timerId}-display`);
+            const elapsed = timers[timerId].elapsed;
+            const hrs = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+            const mins = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+            const secs = String(elapsed % 60).padStart(2, '0');
+            display.textContent = `${hrs}:${mins}:${secs}`;
+        }
+
+        function updateSummary() {
+            const summaryBody = document.getElementById("summary-body");
+            summaryBody.innerHTML = "";
+            const totalSeconds = Object.values(timers).reduce((acc, timer) => acc + timer.elapsed, 0);
+
+            Object.keys(timers).forEach(timerId => {
+                const timer = timers[timerId];
+                const label = document.getElementById(`${timerId}`).querySelector(".timer-title").textContent;
+                const time = `${String(Math.floor(timer.elapsed / 3600)).padStart(2, '0')}:${String(Math.floor((timer.elapsed % 3600) / 60)).padStart(2, '0')}:${String(timer.elapsed % 60).padStart(2, '0')}`;
+                const percentage = totalSeconds > 0 ? ((timer.elapsed / totalSeconds) * 100).toFixed(2) : "0.00";
+
+                const row = `<tr>
+                    <td>${label}</td>
+                    <td>${time}</td>
+                    <td>${percentage}%</td>
+                </tr>`;
+
+                summaryBody.innerHTML += row;
+            });
+        }
+
+        // Initialize displays and recalculate elapsed times
+        Object.keys(timers).forEach(timerId => {
+            if (timers[timerId].startTime) {
+                const now = Date.now();
+                timers[timerId].elapsed = Math.floor((now - timers[timerId].startTime) / 1000);
+            }
+            updateDisplay(timerId);
+        });
+
+        updateSummary();
     </script>
 </body>
 </html>
